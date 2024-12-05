@@ -18,8 +18,3 @@ describe('Day 4', function () {
     });
   })
 });
-
-// test:
-import * as X1 from './code01.js';
-import * as X2 from './code02.js';
-import * as X3 from './code03.js';

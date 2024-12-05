@@ -56,3 +56,21 @@ I couldn't figure out how to get `tsc` to transpile both a `src` and a `test` di
 I added `.js` to the imports of days 1-3, but maybe I broke something anyways. At least I doubt that the path to `input03.txt` used in `code03.ts` still works.
 
 All this rewriting, just to be able to use a standard unit testing framework, took me over 100 minutes.
+
+## Day 5
+
+This took me 6 hours in total. First, I played around with Mocha for a while (nothing wrong with that), and then, I had two bugs in my solution to the hard problem that didn't show on the sample input:
+
+For the hard problem, I generated a table of transitive predecessors (meaning, if there are constraints `a|b` and `b|c` in the input, `a` must also come before `c` in the page update). But this is not correct: only if `b` is itself included in the update must `a` come before `c`. I went on to use this table in an incorrect sorting function: JavaScript's built-in `sort(compareFn)` function, comparing by wether one page is a transitive predecessor of the other. This is incorrect, I thought (wrongly): if `a` and `b` are not predecessors of one another, that doesn't mean that their ordering in the output doesn't matter, it means that their ordering will be determined through other constraints. Which is bullshit, because that's exactly what the transitive closure of the predecessor table ensures: one lookup to check wether _any_ set of constraints constrains the 2 pages. So I changed it to a handwritten bubblesort implementation to make sure that all constraints would be checked. This sorting function hangs on cycles, so I was finally made aware of them, which finally allowed me to fix my solution. Funnily enough, I actually had a test case verify that my DFS implementation doesn't hang when it encounters a loop, thinking that that wouldn't happen anyways. I should have checked for loops in the problem input.
+
+I used `Map` and `Set` today. Nice data structures that lend themselves to method chaining. Although my `node` didn't have all methods listed on MDN. I'll have to remember to check the availability when looking there.
+
+Also, I learned about iterables today. Hopefully, I'll get more opportunities to use
+
+```javascript
+for (const x of someIterable) { ... }
+```
+
+in the coming days.
+
+I look forward to day 6 not taking me 6 hours.
