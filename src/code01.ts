@@ -1,4 +1,4 @@
-import { str } from './inputs/input01';
+import { str } from './inputs/input01.js';
 
 export const arr = str.split('\n').map(
     (row) => row.split('   ').map(

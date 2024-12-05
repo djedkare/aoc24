@@ -1,5 +1,5 @@
-import { str } from './inputs/input02';
-import * as U from './utils';
+import { str } from './inputs/input02.js';
+import * as U from './utils.js';
 
 export const arr: number[][] = str
     .split('\n')

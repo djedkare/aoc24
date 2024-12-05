@@ -1,5 +1,5 @@
-import * as Input from './inputs/input04';
-import * as U from './utils';
+import * as Input from './inputs/input04.js';
+import * as U from './utils.js';
 
 export const arr = Input.str.split('\n');
 
