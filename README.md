@@ -1,3 +1,5 @@
+[Advent of Code 2024](https://adventofcode.com/2024)
+
 # Thoughts, Complaints, and Learnings
 
 ## Day 1
@@ -46,7 +48,7 @@ node
 for the REPL, and
 
 ```javascript
-X = await import("./dist/code04.js");
+X = await import('./dist/code04.js');
 ```
 
 in the REPL to import my modules. Mind the `.js` extension - the source files also refer to each other as `.js` now.
@@ -74,3 +76,47 @@ for (const x of someIterable) { ... }
 in the coming days.
 
 I look forward to day 6 not taking me 6 hours.
+
+## Day 6
+
+Less than 6 hours indeed. Even though types like `[number, number]` in TypeScript look like the tuples of Python, Ocaml, Haskell etc., they're really not. Arrays are objects in JavaScript, and their equality is identity. That bit me twice today:
+
+### Switch Case
+
+```javascript
+switch(x) {
+    case a:
+        ...
+}
+```
+
+checks `x === a` under the hood. So in a statement like
+
+```javascript
+switch(x) {
+    case [0, 1]:
+        ...
+    case [-1, 0]:
+        ...
+    ...
+}
+```
+
+with `x: [number, number]`, the switch will check wether `x` has the same adress as any of the case tuples, which is never the case.
+
+### Set (also applies to other data structures)
+
+Similarly, a `Set` of tuples is a set of tuple adresses under the hood, which was not my intended behavior.
+
+### A Solution
+
+If you need to perform an operation on tuples `x` and `y` that checks equality, perform it on `JSON.stringify(x)` and `JSON.stringify(y)` instead, as strings are a builtin type and thus not objects:
+
+```javascript
+const s = new Set([]);
+const x = [0, 1];
+const y = [0, 1];
+
+s.add(JSON.stringify(x));
+s.has(JSON.stringify(y)); // true
+```
