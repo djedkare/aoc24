@@ -41,6 +41,22 @@ export const count = <T>(f: (arg0: T) => boolean, arr: T[]): number => {
     return acc;
 };
 
+export const sum = (numbers: number[]): number =>
+    numbers.reduce(
+        (accumulator, currentValue) => accumulator + currentValue,
+        0
+    );
+
+export const product = (numbers: number[]): number =>
+    numbers.reduce(
+        (accumulator, currentValue) => accumulator * currentValue,
+        1
+    );
+
+export const max = (numbers: number[]): number => Math.max(...numbers); // max([]) === -Infinity
+
+export const min = (numbers: number[]): number => Math.min(...numbers); // min([]) === Infinity
+
 //   Set
 //   ===
 

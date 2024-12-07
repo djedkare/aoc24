@@ -31,6 +31,24 @@ describe('Utils', function () {
                 3
             );
         });
+        it('sum', function () {
+            assert.deepStrictEqual(10, U.sum([1, 2, 3, 4]));
+        });
+        it('product', function () {
+            assert.deepStrictEqual(24, U.product([1, 2, 3, 4]));
+        });
+        it('max', function () {
+            assert.deepStrictEqual(8, U.max([5, -2, -Infinity, 8, 2]));
+        });
+        it('max inf', function () {
+            assert.deepStrictEqual(Infinity, U.max([5, -2, Infinity, 8, 2]));
+        });
+        it('min', function () {
+            assert.deepStrictEqual(-2, U.min([5, -2, Infinity, 8, 2]));
+        });
+        it('min inf', function () {
+            assert.deepStrictEqual(-Infinity, U.min([5, -2, -Infinity, 8, 2]));
+        });
     });
 
     describe('Set', function () {
