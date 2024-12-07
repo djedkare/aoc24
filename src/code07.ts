@@ -21,11 +21,11 @@ export const transformInput = (str: string): [number, number[]][] => {
     });
 };
 
-export const maxNumbers = Math.max(
-    ...transformInput(inputStr).map(
+export const maxNumbers = U.max(
+    transformInput(inputStr).map(
         (line: [number, number[]]): number => line[1].length
     )
-); // 12!
+); // 12
 
 export const sat_ = (
     [testValue, numbers]: [number, number[]],
