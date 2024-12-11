@@ -85,7 +85,7 @@ describe('Utils', function () {
                 new Set([3])
             );
         });
-        it('intersection( x, y, z)', function () {
+        it('intersection(x, y, z)', function () {
             assert.deepStrictEqual(
                 U.intersection(
                     new Set([1, 2, 3]),

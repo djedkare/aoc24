@@ -1,3 +1,15 @@
+//   Coord
+//   =====
+
+export type Coord = [number, number];
+
+export const at = <T>(grid: T[][], [y, x]: Coord): T => grid[y][x];
+
+export const add = ([y0, x0]: Coord, [y1, x1]: Coord): Coord => [
+    y0 + y1,
+    x0 + x1,
+];
+
 //   Array
 //   =====
 
