@@ -27,18 +27,21 @@ describe('Day 11: Stones', function () {
         it('blink(1001)', function () {
             assert.deepStrictEqual(X.blink(1001), [10, 1]);
         });
-        it('passTime: sample input, 1 step', function () {
-            assert.deepStrictEqual(X.passTime([125, 17], 1), [253000, 1, 7]);
-        });
-        it('passTime: sample input, 2 steps', function () {
+        it('passTimeBruteForce: sample input, 1 step', function () {
             assert.deepStrictEqual(
-                X.passTime([125, 17], 2),
+                X.passTimeBruteForce([125, 17], 1),
+                [253000, 1, 7]
+            );
+        });
+        it('passTimeBruteForce: sample input, 2 steps', function () {
+            assert.deepStrictEqual(
+                X.passTimeBruteForce([125, 17], 2),
                 [253, 0, 2024, 14168]
             );
         });
-        it('passTime: sample input, 6 steps', function () {
+        it('passTimeBruteForce: sample input, 6 steps', function () {
             assert.deepStrictEqual(
-                X.passTime([125, 17], 6),
+                X.passTimeBruteForce([125, 17], 6),
                 [
                     2097446912, 14168, 4048, 2, 0, 2, 4, 40, 48, 2024, 40, 48,
                     80, 96, 2, 8, 6, 7, 6, 0, 3, 2,
