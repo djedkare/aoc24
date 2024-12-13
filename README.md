@@ -120,3 +120,7 @@ const y = [0, 1];
 s.add(JSON.stringify(x));
 s.has(JSON.stringify(y)); // true
 ```
+
+## Day 12
+
+The "`Set` with `JSON.stringify`" trick sucks for more complex data than `[number, number]` as it blinds the type system. For today's hard puzzle I used a set to store values of type `[[number, number], [number, number]]`. When I forgot to add the second tuple to the value and put in `[number, number]`, nothing alerted me to my mistake.
