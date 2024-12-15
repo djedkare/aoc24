@@ -124,3 +124,18 @@ s.has(JSON.stringify(y)); // true
 ## Day 12
 
 The "`Set` with `JSON.stringify`" trick sucks for more complex data than `[number, number]` as it blinds the type system. For today's hard puzzle I used a set to store values of type `[[number, number], [number, number]]`. When I forgot to add the second tuple to the value and put in `[number, number]`, nothing alerted me to my mistake.
+
+## Day 15
+
+JavaScript's `switch` statement has the same stupid fallthrough default as C's:
+
+```javascript
+let b;
+switch (s) {
+    case 'f':
+        b = false;
+    case 't':
+        b = true;
+}
+// b is true here whether s is 't' or 'f'
+```
