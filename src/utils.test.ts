@@ -2,6 +2,20 @@ import * as U from './utils.js';
 import assert from 'assert';
 
 describe('Utils', function () {
+    describe('Coord', function () {
+        it('equal: true', function () {
+            assert.ok(U.equal([2, 3], [2, 3]));
+        });
+        it('equal: false 1', function () {
+            assert.ok(!U.equal([2, 3], [3, 2]));
+        });
+        it('equal: false 2', function () {
+            assert.ok(!U.equal([2, 3], [2, 333]));
+        });
+        it('equal: false 3', function () {
+            assert.ok(!U.equal([2, 3], [222, 3]));
+        });
+    });
     describe('Array', function () {
         it('range(5)', function () {
             assert.deepStrictEqual(U.range(5), [0, 1, 2, 3, 4]);

@@ -40,10 +40,33 @@ export const solvePuzzle = (puzzle: Puzzle): [number, number] => {
     return [-1, -1];
 };
 
-export const cost = (x: U.Coord): number =>
+export const costEasy = (x: U.Coord): number =>
     x[0] === -1 && x[1] === -1 ? 0 : 3 * x[0] + x[1];
 
 export const solveEasy = (puzzles: Puzzle[]): number =>
-    U.sum(puzzles.map((p) => cost(solvePuzzle(p))));
+    U.sum(puzzles.map((p) => costEasy(solvePuzzle(p))));
 
-let ineq = ([y0, x0]: U.Coord, [y1, x1]: U.Coord) => y0 !== y1 || x0 !== x1;
+// https://en.wikipedia.org/wiki/Gaussian_elimination
+export const solvePuzzleGauss = (p: Puzzle): U.Coord => {
+    const solB =
+        (p.Prize[1] * p.A[0] - p.Prize[0] * p.A[1]) /
+        (p.B[1] * p.A[0] - p.B[0] * p.A[1]);
+    const solA =
+        (p.Prize[0] * p.A[1] - solB * p.B[0] * p.A[1]) / (p.A[0] * p.A[1]);
+    return [solA, solB];
+};
+
+export const costHard = ([a, b]: U.Coord): number =>
+    Number.isInteger(a) && Number.isInteger(b) && a >= 0 && b >= 0
+        ? 3 * a + b
+        : 0;
+
+export const solveHard = (puzzles: Puzzle[]): number =>
+    U.sum(puzzles.map((p) => costHard(solvePuzzleGauss(p))));
+
+export const hardenPuzzle = (puzzle: Puzzle): Puzzle => {
+    const pNew = structuredClone(puzzle);
+    const bigVector: U.Coord = [10000000000000, 10000000000000];
+    pNew.Prize = U.add(bigVector, pNew.Prize);
+    return pNew;
+};

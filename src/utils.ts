@@ -15,6 +15,9 @@ export const subtract = ([y0, x0]: Coord, [y1, x1]: Coord): Coord => [
     x0 - x1,
 ];
 
+export const equal = ([y0, x0]: Coord, [y1, x1]: Coord) =>
+    y0 === y1 && x0 === x1;
+
 //   Array
 //   =====
 
