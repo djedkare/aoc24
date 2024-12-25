@@ -18,6 +18,26 @@ export const subtract = ([y0, x0]: Coord, [y1, x1]: Coord): Coord => [
 export const equal = ([y0, x0]: Coord, [y1, x1]: Coord) =>
     y0 === y1 && x0 === x1;
 
+export const neighbours = ([y, x]: Coord): Coord[] => [
+    [y - 1, x],
+    [y + 1, x],
+    [y, x - 1],
+    [y, x + 1],
+];
+
+export const print = ([y, x]: Coord): string => `[${y}, ${x}]`;
+
+//   Coord-Adjacent
+//   ==============
+
+export const initializeGrid = <T>(size: Coord, val: T): T[][] => {
+    const grid = Array(size[0]);
+    for (let i = 0; i < grid.length; i++) {
+        grid[i] = Array(size[1]).fill(val);
+    }
+    return grid;
+};
+
 //   Array
 //   =====
 
