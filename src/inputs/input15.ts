@@ -9,6 +9,16 @@ export const smallSampleStr = String.raw`########
 
 <^^>>>vv<v>>v<<`;
 
+export const smallSampleStrHard = String.raw`#######
+#...#.#
+#.....#
+#..OO@#
+#..O..#
+#.....#
+#######
+
+<vv<<^^<<^^`;
+
 export const sampleStr = String.raw`##########
 #..O..O.O#
 #......O.#

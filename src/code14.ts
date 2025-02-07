@@ -19,7 +19,7 @@ export const transformInput = (str: string): Robot[] => {
 
 export const sampleInput = transformInput(Input.sampleStr);
 export const input = transformInput(Input.str);
-export const inputBounds = [101, 103];
+export const inputBounds: U.Coord = [101, 103];
 
 export const mod = ([y0, x0]: U.Coord, [y1, x1]: U.Coord): U.Coord => [
     y0 % y1,
@@ -69,6 +69,51 @@ export const simulate = (
     }
     return robots;
 };
+
+export const averageDistance = (robots: Robot[]): number => {
+    const positions = robots.map((r) => r.p);
+    // const f = (acc: U.Coord, cur: U.Coord) => U.add(acc, cur);
+    const averagePosition: U.Coord = U.mul(
+        positions.reduce((acc: U.Coord, cur: U.Coord) => U.add(acc, cur), [
+            0, 0,
+        ] as U.Coord),
+        [1 / robots.length, 1 / robots.length]
+    );
+
+    const averageDistance: number =
+        positions.reduce(
+            (acc: number, cur: U.Coord) => acc + U.dist(cur, averagePosition),
+            0
+        ) / robots.length;
+    return averageDistance;
+};
+
+export const simulateHard = (
+    robots: Robot[],
+    bounds: U.Coord,
+    steps: number
+): number[] => {
+    const arr: number[] = [];
+    for (let i = 0; i < steps; i++) {
+        arr.push(averageDistance(robots));
+        robots = robots.map((r) => stepRobot(r, bounds));
+    }
+    return arr;
+};
+
+export const resultsHard: number[] = simulateHard(
+    input,
+    inputBounds,
+    inputBounds[0] * inputBounds[1]
+);
+
+export const averageHard =
+    resultsHard.reduce((acc, cur) => acc + cur, 0) / resultsHard.length;
+
+export const minIndex = (arr: number[]): number =>
+    arr.reduce((acc, cur, i) => (cur < arr[acc] ? i : acc), 0);
+
+export const minHard = minIndex(resultsHard);
 
 export const spread = (robots: Robot[]): U.Coord => {
     const yVals: number[] = robots.map((r) => r.p[0]);

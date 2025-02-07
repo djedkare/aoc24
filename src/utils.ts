@@ -5,15 +5,30 @@ export type Coord = [number, number];
 
 export const at = <T>(grid: T[][], [y, x]: Coord): T => grid[y][x];
 
-export const add = ([y0, x0]: Coord, [y1, x1]: Coord): Coord => [
+export const addInternal = ([y0, x0]: Coord, [y1, x1]: Coord): Coord => [
     y0 + y1,
     x0 + x1,
+];
+
+export const add = (...args: Coord[]): Coord => {
+    if (args.length === 0) {
+        return [0, 0];
+    }
+    return args.reduce(addInternal);
+};
+
+export const mul = ([y0, x0]: Coord, [y1, x1]: Coord): Coord => [
+    y0 * y1,
+    x0 * x1,
 ];
 
 export const subtract = ([y0, x0]: Coord, [y1, x1]: Coord): Coord => [
     y0 - y1,
     x0 - x1,
 ];
+
+export const dist = ([y0, x0]: Coord, [y1, x1]: Coord): number =>
+    Math.sqrt(Math.pow(y0 - y1, 2) + Math.pow(x0 - x1, 2));
 
 export const equal = ([y0, x0]: Coord, [y1, x1]: Coord) =>
     y0 === y1 && x0 === x1;

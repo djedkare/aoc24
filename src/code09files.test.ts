@@ -126,7 +126,60 @@ describe('Day 9: Files on Disk', function () {
             assert.deepStrictEqual(X.solveEasy(X.sampleStr), 1928);
         });
     });
+
     describe('Hard', function () {
-        it('');
+        it('transformInputHard: empty input', function () {
+            const input = '';
+            const output: X.Thing[] = [];
+            assert.deepStrictEqual(X.transformInputHard(input), output);
+        });
+        it('transformInputHard: small input', function () {
+            const input = '123';
+            const output: X.Thing[] = [
+                { t: 'File', id: 0, length: 1 },
+                { t: 'Gap', length: 2 },
+                { t: 'File', id: 1, length: 3 },
+            ];
+            assert.deepStrictEqual(X.transformInputHard(input), output);
+        });
+        it('deleteFileFromArray', function () {
+            const inputThings: X.Thing[] = [
+                { t: 'Gap', length: 3 },
+                { t: 'File', length: 8, id: 12 },
+                { t: 'Gap', length: 2 },
+            ];
+            X.deleteFileFromArray(inputThings, 1);
+            const output: X.Thing[] = [{ t: 'Gap', length: 13 }];
+            assert.deepStrictEqual(inputThings, output);
+        });
+        it('insertIntoGap: exact fit', function () {
+            let inputThings: X.Thing[] = [
+                { t: 'File', length: 3, id: 0 },
+                { t: 'Gap', length: 8 },
+                { t: 'File', length: 5, id: 1 },
+            ];
+            X.insertIntoGap(inputThings, 1, { t: 'File', length: 8, id: 99 });
+            let output = [
+                { t: 'File', length: 3, id: 0 },
+                { t: 'File', length: 8, id: 99 },
+                { t: 'File', length: 5, id: 1 },
+            ];
+            assert.deepStrictEqual(inputThings, output);
+        });
+        it('insertIntoGap: inexact fit', function () {
+            let inputThings: X.Thing[] = [
+                { t: 'File', length: 3, id: 0 },
+                { t: 'Gap', length: 9 },
+                { t: 'File', length: 5, id: 1 },
+            ];
+            X.insertIntoGap(inputThings, 1, { t: 'File', length: 8, id: 99 });
+            let output = [
+                { t: 'File', length: 3, id: 0 },
+                { t: 'File', length: 8, id: 99 },
+                { t: 'Gap', length: 1 },
+                { t: 'File', length: 5, id: 1 },
+            ];
+            assert.deepStrictEqual(inputThings, output);
+        });
     });
 });

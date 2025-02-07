@@ -13,4 +13,14 @@ describe('Day 14: Bathroom Security Robots', function () {
             );
         });
     });
+
+    describe('Hard', function () {
+        it('dist', function () {
+            const robots: X.Robot[] = [
+                { p: [0, 0], v: [0, 0] },
+                { p: [6, 8], v: [0, 0] },
+            ];
+            assert.deepStrictEqual(X.averageDistance(robots), 5);
+        });
+    });
 });

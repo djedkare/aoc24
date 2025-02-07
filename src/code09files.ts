@@ -1,8 +1,9 @@
-import * as U from './inputs/input09files.js';
-import assert from 'assert';
+// import { type } from 'os';
+import * as Input from './inputs/input09files.js';
+import * as U from './utils.js';
 
-export const str = U.str;
-export const sampleStr = U.sampleStr;
+export const str = Input.str;
+export const sampleStr = Input.sampleStr;
 
 export const transformInput = (str: string): (number | '.')[] => {
     if (str[str.length - 1] === '\n') {
@@ -42,7 +43,6 @@ export const moveFiles = (input: (number | '.')[]): (number | '.')[] => {
             left++;
             right--;
         }
-        // printLine(output);
     }
     return output;
 };
@@ -66,39 +66,146 @@ export const printLine = (arr: (number | '.')[]): void => {
     console.log(str);
 };
 
-export const moveFilesHard = (input: (number | '.')[]): (number | '.')[] => {
-    const arr = input.slice();
-    const find = (len: number, bound: number): number | 'none' => {
-        for (let i = 0; i < bound; i++) {
-            if (arr[i] !== '.') {
-                continue;
-            }
-            let k = i;
-            for (; arr[k] === '.'; k++) {}
-            if (k - i >= len) {
-                return i;
-            }
+// Hard
+// ====
+
+export type Thing =
+    | { t: 'File'; id: number; length: number }
+    | { t: 'Gap'; length: number };
+export type File = { t: 'File'; id: number; length: number };
+export type Gap = { t: 'Gap'; length: number };
+
+export const printLineHard = (arr: Thing[]): string => {
+    let thingToStr = (thing: Thing) =>
+        Array(thing.length)
+            .fill(thing.t === 'File' ? '' + thing.id : '.')
+            .join('');
+    return arr.reduce((acc, cur) => acc + thingToStr(cur), '');
+};
+
+export const transformInputHard = (str: string): Thing[] => {
+    if (str[str.length - 1] === '\n') {
+        str = str.slice(0, str.length - 1);
+    }
+    const numbers = str.split('').map((c) => parseInt(c));
+    let addFile = true;
+    let id = 0;
+    const output: Thing[] = [];
+
+    for (const n of numbers) {
+        if (addFile) {
+            output.push({ t: 'File', id: id, length: n });
+            id += 1;
+        } else {
+            output.push({ t: 'Gap', length: n });
         }
-        return 'none';
-    };
-    let k = arr.length - 1;
-    while (k >= 0) {
-        if (arr[k] === '.') {
-            k--;
-            continue;
+        addFile = !addFile;
+    }
+    return output;
+};
+
+export const inputHard = transformInputHard(str);
+
+export const deleteFileFromArray = (things: Thing[], i: number): void => {
+    let thing = things[i],
+        l = things[i].length;
+    if (thing.t !== 'File') {
+        throw 'deleteFileFromArray: not a file';
+    }
+    things.splice(i, 1, { t: 'Gap', length: l });
+    if (things.length > i + 1 && things[i + 1].t === 'Gap') {
+        things[i].length += things[i + 1].length;
+        things.splice(i + 1, 1);
+    }
+    if (things[i - 1].t === 'Gap') {
+        things[i - 1].length += things[i].length;
+        things.splice(i, 1);
+    }
+};
+
+export const insertIntoGap = (
+    things: Thing[],
+    i: number,
+    thing: Thing
+): void => {
+    if (things[i].t === 'File') {
+        throw 'insertIntoGap: things[i] not a gap';
+    } else {
+        if (things[i].length < thing.length) {
+            throw 'insertIntoGap: gap too small';
+        } else if (things[i].length === thing.length) {
+            things[i] = thing;
+        } else {
+            things[i].length -= thing.length;
+            things.splice(i, 0, thing);
         }
-        // arr[k] is a number
-        let i = k;
-        while (arr[i - 1] === arr[k]) {
-            i--;
+    }
+};
+
+export const moveFilesHard = (things_: Thing[], log = false): Thing[] => {
+    let things: Thing[] = structuredClone(things_);
+    let lengths: Map<number, number> = new Map();
+    var maxId = -1;
+    for (let thing of things) {
+        if (thing.t === 'File') {
+            lengths.set(thing.id, thing.length);
+            maxId = thing.id;
         }
-        let len = 1 + k - i;
-        let freeLocation = find(len, i);
-        if (freeLocation === 'none') {
-            return arr;
-        }
-        // move slice of length len from i to freeLocation
     }
 
-    return arr;
+    if (log) {
+        console.log(printLineHard(things));
+    }
+    var id = maxId;
+    while (id >= 0) {
+        if (log) {
+            console.log(`id ${id}: `);
+        }
+        for (let i of U.range(things.length)) {
+            let thing = things[i];
+            if (thing.t === 'Gap' && thing.length >= lengths.get(id)!) {
+                if (log) {
+                    console.log(`gap at index ${i}`);
+                }
+                var oldIndex = -1;
+                for (let k of U.range(things.length)) {
+                    if (things[k].t === 'File' && things[k].id === id) {
+                        oldIndex = k;
+                    }
+                }
+                let file: Thing = things[oldIndex];
+                deleteFileFromArray(things, oldIndex);
+                insertIntoGap(things, i, file);
+                break;
+            } else if (thing.t === 'File' && thing.id === id) {
+                if (log) {
+                    console.log(`no gap found`);
+                }
+                break;
+            }
+        }
+        id -= 1;
+        if (log) {
+            console.log(printLineHard(things));
+        }
+    }
+    return things;
 };
+
+export const checksumHard = (things: Thing[]): number => {
+    var i = 0;
+    var total = 0;
+    for (let thing of things) {
+        if (thing.t === 'File') {
+            for (let k of U.range(thing.length)) total += (i + k) * thing.id;
+        }
+        i += thing.length;
+    }
+    return total;
+};
+
+export const solveHard = (things: Thing[]): number =>
+    checksumHard(moveFilesHard(things));
+export const solutionHard = () => solveHard(transformInputHard(str));
+export const sampleSolutionHard = () =>
+    moveFilesHard(transformInputHard(sampleStr));

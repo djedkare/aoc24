@@ -15,7 +15,35 @@ describe('Utils', function () {
         it('equal: false 3', function () {
             assert.ok(!U.equal([2, 3], [222, 3]));
         });
+        it('add: 0 args', function () {
+            assert.deepStrictEqual(U.add(), [0, 0]);
+        });
+        it('add: 1 arg', function () {
+            assert.deepStrictEqual(U.add([1, 3]), [1, 3]);
+        });
+        it('add: 2 args', function () {
+            assert.deepStrictEqual(U.add([1, 3], [10, 30]), [11, 33]);
+        });
+        it('add: 3 args', function () {
+            assert.deepStrictEqual(
+                U.add([1, 3], [10, 30], [100, 300]),
+                [111, 333]
+            );
+        });
+        it('dist: 0', function () {
+            assert.deepStrictEqual(U.dist([3, 500], [3, 500]), 0);
+        });
+        it('dist: 1 on y axis', function () {
+            assert.deepStrictEqual(U.dist([3, 500], [4, 500]), 1);
+        });
+        it('dist: 1 on x axis', function () {
+            assert.deepStrictEqual(U.dist([3, 500], [3, 501]), 1);
+        });
+        it('dist: 5', function () {
+            assert.deepStrictEqual(U.dist([0, 0], [3, 4]), 5);
+        });
     });
+
     describe('Array', function () {
         it('range(5)', function () {
             assert.deepStrictEqual(U.range(5), [0, 1, 2, 3, 4]);

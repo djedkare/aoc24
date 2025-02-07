@@ -17,8 +17,4 @@ describe('Day 10: Hiking', function () {
             assert.deepStrictEqual(X.solveEasy(X.sampleStr), 36);
         });
     });
-
-    describe('Hard', function () {
-        it('');
-    });
 });
